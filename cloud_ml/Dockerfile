@@ -57,5 +57,5 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN pip install --upgrade pip && \
-    pip3 install --upgrade pip
+RUN pip3 install --upgrade pip && \
+    pip install --upgrade pip
