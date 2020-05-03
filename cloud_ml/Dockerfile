@@ -1,11 +1,9 @@
-FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
+FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu16.04
 
 LABEL maintainer Amit Kumar Jaiswal <amitkumarj441@gmail.com>
 
-###################
-#### CUDA: Profiling, TF: CUPTI
-###################
-RUN echo "/usr/local/cuda-9.0/lib64/" >/etc/ld.so.conf.d/cuda.conf
+#### CUDA dependencies
+RUN echo "/usr/local/cuda-10.1/lib64/" >/etc/ld.so.conf.d/cuda.conf
 RUN echo "/usr/local/cuda/extras/CUPTI/lib64/" >>/etc/ld.so.conf.d/cuda.conf
 
 # check how to bind host provided libraries
@@ -22,7 +20,7 @@ RUN cd /opt && \
     cd /opt/root/ && \
     /bin/bash bin/thisroot.sh
 
-# bazel build
+# Bazel dependencies for TF
 RUN echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" >/etc/apt/sources.list.d/bazel.list && \
     curl https://bazel.build/bazel-release.pub.gpg | apt-key add -
 
@@ -40,7 +38,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     pkg-config \
     python \
     python-dev \
-    python3 \
+    python3.5 \
     rsync \
     software-properties-common \
     unzip \
@@ -51,14 +49,13 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     vim \
     wget \
     bazel \
-    python-pip \
+    python3-pip \
     python3-pip \
     xvfb \
     python-opengl \
     && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
 
 RUN pip install --upgrade pip && \
     pip3 install --upgrade pip
